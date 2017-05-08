@@ -1,0 +1,140 @@
+<html>
+<head>
+  <title>ToDoList!</title>
+</head>
+<style>
+h1 {
+	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+	font-size: 30px;
+	font-style: normal;
+	font-variant: small-caps;
+	line-height: 60px;
+  letter-spacing: 3px;
+}
+h2 {
+	  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+		font-size: 25px;
+		font-style: normal;
+		font-variant: small-caps;
+		line-height: 50px;
+		text-align: left;
+		margin-left: 10px
+    letter-spacing: 10px;
+}
+
+label {
+  margin-left: 16px;
+	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+	font-size: 20px;
+	font-style: normal;
+	font-variant: normal;
+	line-height: 40px;
+  letter-spacing: 3px;
+	list-style: square;
+  width:400px;
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+.radio {
+  margin-left: 10px;
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-size: 15px;
+	font-style: normal;
+	font-variant: normal;
+	line-height: 40px;
+  width:400px;
+  padding-bottom: 10px;
+  letter-spacing: 1.5px;
+  display: inline-block;
+}
+
+textarea {
+  margin-left: 10px;
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-variant: normal;
+  line-height: 30px;
+  list-style: square;
+  width: 40%;
+  resize: none;
+  letter-spacing: 1.5px;
+}
+
+#title {
+  margin-left: 10px;
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-variant: normal;
+  line-height: 30px;
+  list-style: square;
+  width: 40%;
+  letter-spacing: 1.5px;
+}
+
+.submitButton
+{
+	border-top: 2px;
+	border-left: 2px;
+	border-right: 2px;
+	border-bottom: 2px;
+  border-style: solid;
+  border-color: black;
+	padding: 10px 50px;
+	font-size: 20px;
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-variant: small-caps;
+	background-color:	white;
+	font-weight:bold;
+  letter-spacing: 5px;
+	color: black;
+  text-align: center;
+  margin-top: 40px;
+}
+</style>
+<script type = "text/javascript">
+function formSubmit() {
+  var title = document.getElementById("title");
+  var description = document.getElementById("description");
+  var radios = document.getElementsByName("importance");
+  var category;
+  for (var i = 0, length = radios.length; i < length; i++) {
+      if (radios[i].checked) {
+          category = radios[i].value;
+          break;
+      }
+  }
+  console.log(title.value)
+  var task = { "title": title.value, "description": description.value, "category": category };
+  var jsonstring = JSON.stringify(task);
+  console.log(jsonstring);
+  var xhr = new XMLHttpRequest();
+xhr.open('POST', "http://34.208.194.248/create_todo", true);
+xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+xhr.send(jsonstring);
+// xhr.open('GET', 'http://localhost:5000/show_todos', true);
+// xhr.send(null);
+}
+</script>
+<body>
+<h1><center>Add ToDoList! Task</center></h1>
+<p>
+<form method="post">
+<label for="fname">Task Title :</label><br/>
+<input type="text" id="title" name="fname" class="fname"><br/><br/>
+<label for="fname">Task Description :</label><br/>
+<textarea rows="5" cols="20" id="description"></textarea><br/><br/>
+<label for="fname">Task Importance :</label><br/>
+<div class="radio">
+<input type="radio" name="importance" value="exImp" checked>   Extremely Important, Do IT!<br>
+<input type="radio" name="importance" value="Imp">   Some what Important<br>
+<input type="radio" name="importance" value="notImp">   Keep Calm<br>
+</div>
+<center>
+<input type="submit" value="Submit It!" class="submitButton" onclick="formSubmit()"></center>
+</form>
+</p>
+</body>
+</html>
