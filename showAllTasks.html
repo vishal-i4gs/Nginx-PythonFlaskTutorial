@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ToDoList!</title>
+</head>
+<style>
+h1 {
+	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+	font-size: 30px;
+	font-style: normal;
+	font-variant: small-caps;
+	line-height: 60px;
+	letter-spacing: 3px;
+}
+h2 {
+	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+		font-size: 25px;
+		font-style: normal;
+		font-variant: small-caps;
+		line-height: 50px;
+		text-align: left;
+		margin-left: 10px;
+		letter-spacing: 3px;
+}
+th,tr,td {
+	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+	font-size: 15px;
+	font-style: normal;
+	font-variant: small-caps;
+	line-height: 15px;
+	list-style: square;
+	letter-spacing: 2px;
+  text-align: center;
+  padding: 15px;
+}
+table,th,td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  /*table-layout: fixed;*/
+}
+table#t01 tr:nth-child(even) {
+    background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+   background-color:#fff;
+}
+table#t01 th {
+    background-color: black;
+    color: white;
+}
+.selected{
+  background-color:green;
+}
+.bad{
+  background-color:red;
+}
+.displayNone{
+    display:none;
+}
+.displayBlock{
+    display:block;
+}
+.table1 tr {
+    cursor: pointer;
+}
+</style>
+<body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+<script type="text/javascript">
+    $.ajax({
+        url: "http://localhost/service/show_todos",
+        type: "get",
+        dataType: "json", //jsonp allows cross-domain ajax requests.
+        success: function (data) {
+          console.log("success");
+                var tr = data.report
+                for (var i = 0; i < data.length; i++) {
+                    tr = $('<tr/>');
+                    tr.click((function(id) {
+                       return function() {
+                          alert(data[id].title);
+                       };
+                    }(i)));
+                    tr.append("<td>" + (i+1) + "</td>");
+                    tr.append("<td>" + data[i].title + "</td>");
+                    if(data[i].importance == 1) {
+                    tr.append("<td bgcolor='B33A3A'>" + "Extremely" + "</td>");
+                  }
+                  else if(data[i].importance == 2) {
+                    tr.append("<td bgcolor='CCCC00'>" + "Moderate"+ "</td>");
+                  }
+                  else if(data[i].importance == 3) {
+                    tr.append("<td bgcolor='29976b'>" + "Casual" + "</td>");
+                  }
+                  else {
+                    tr.append("<td>" + "Unknown" + "</td>");
+                  }
+                    tr.append("<td>" + data[i].description + "</td>");
+                    $('.table1').append(tr);
+                    $('.table1').show();
+                }
+              },
+              error: function(httpRequest, status, error){
+                console.log("error");
+                $('.errorMess').show();
+                              // alert('error');
+          }
+    });
+</script>
+<h1><center>ToDoList! Tasks</center></h1>
+<p>
+  <h2 class="errorMess" style="display:none"><center>Sorry, There is a bubu</center></h2>
+  <table class="table1" width="100%" id="t01" style="display:none">
+    <tr>
+        <th>Task No</th>
+        <th>Task</th>
+        <th>Importance</th>
+        <th>Description</th>
+    </tr>
+</table>
+</p>
+</body>
+</html>

@@ -94,7 +94,14 @@ textarea {
   margin-top: 40px;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
 <script type = "text/javascript">
+$(window).bind("pageshow", function() {
+    $('form').get(0).reset(); //clear form data on page load
+});
+var myResponseFunction = function (data,status) {
+window.location.href = "http://localhost/showAllTasks"
+}
 function formSubmit() {
   var title = document.getElementById("title");
   var description = document.getElementById("description");
@@ -102,26 +109,32 @@ function formSubmit() {
   var category;
   for (var i = 0, length = radios.length; i < length; i++) {
       if (radios[i].checked) {
-          category = radios[i].value;
+          category = i
           break;
       }
   }
-  console.log(title.value)
-  var task = { "title": title.value, "description": description.value, "category": category };
+  var task = { "title": title.value, "description": description.value, "importance": i+1 };
   var jsonstring = JSON.stringify(task);
-  console.log(jsonstring);
-  var xhr = new XMLHttpRequest();
-xhr.open('POST', "http://34.208.194.248/create_todo", true);
-xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-xhr.send(jsonstring);
-// xhr.open('GET', 'http://localhost:5000/show_todos', true);
-// xhr.send(null);
+    $.ajax({
+         type: 'POST',
+         url: "http://localhost/service/create_todo",
+         dataType: 'text',
+         contentType: "application/json",
+         data:jsonstring,
+         success: function(response){
+           console.log("sucess");
+                        window.location.href = "http://localhost/showAllTasks";
+                    },
+         error: function(httpRequest,status,error) {
+           console.log("Erroro");
+         }
+     });
 }
 </script>
 <body>
 <h1><center>Add ToDoList! Task</center></h1>
 <p>
-<form method="post">
+<form method="post" id='form'>
 <label for="fname">Task Title :</label><br/>
 <input type="text" id="title" name="fname" class="fname"><br/><br/>
 <label for="fname">Task Description :</label><br/>
