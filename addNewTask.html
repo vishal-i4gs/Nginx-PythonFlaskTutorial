@@ -100,7 +100,7 @@ $(window).bind("pageshow", function() {
     $('form').get(0).reset(); //clear form data on page load
 });
 var myResponseFunction = function (data,status) {
-window.location.href = "http://localhost/showAllTasks"
+window.location.href = "/showAllTasks"
 }
 function formSubmit() {
 
@@ -132,7 +132,7 @@ function formSubmit() {
          data:jsonstring,
          success: function(response){
            console.log("sucess");
-                        window.location.href = "http://localhost/showAllTasks";
+                        window.location.href = "/showAllTasks";
                     },
          error: function(httpRequest,status,error) {
            console.log("Erroro");
