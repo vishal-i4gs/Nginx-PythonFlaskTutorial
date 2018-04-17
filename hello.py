@@ -21,7 +21,7 @@ def create_todo() :
 	todoItem = {
 	"id" : uuid.uuid4(),
 	"title" : request.json["title"],
-	"description" : request.json["description"],
+			"description" : request.json["description"],
 	"importance" : request.json["importance"],
 	"completed" : False
 	}
